@@ -6,14 +6,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@Table(name = "Pessoa")
 @Getter @Setter
 @NoArgsConstructor
 public class Pessoa {

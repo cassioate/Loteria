@@ -9,5 +9,4 @@ import com.tessaro.loterica.model.Email;
 public interface EmailRepository extends JpaRepository<Email, Long> {
 	
 	List<Email> findByEmail(String email);
-
 }
