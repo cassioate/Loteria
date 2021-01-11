@@ -30,7 +30,4 @@ public enum Perfil {
 		throw new IllegalArgumentException("id invalido: "+ cod);
 	}
 
-
-
-
 }

@@ -8,14 +8,14 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.tessaro.loterica.service.validators.EmailValidator;
+import com.tessaro.loterica.service.validators.UserValidator;
 
 @Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {EmailValidator.class})
-public @interface EmailValido {
+@Constraint(validatedBy = {UserValidator.class})
+public @interface UserValido {
 	
-	String message() default "O email já foi utilizado";
+	String message() default "O email já foi utilizado para cadastro, favor inserir outro endereço de email.";
 	 
     Class<?>[] groups() default {};
  

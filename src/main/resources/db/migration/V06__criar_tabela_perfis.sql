@@ -1,6 +1,5 @@
-CREATE TABLE Perfil (
-	id SERIAL,
+CREATE TABLE Perfis (
+	user_id SERIAL,
 	PERFIS VARCHAR(50) NOT NULL,
-	constraint pk_usuario primary key (id),
-	cosntraint fk_perfil foreign key (id) references users (id)
+	CONSTRAINT fk_perfil FOREIGN KEY (user_id) REFERENCES Users(id)
 );

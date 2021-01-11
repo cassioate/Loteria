@@ -6,12 +6,14 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.tessaro.loterica.config.usuario.DTO.UserDTO;
 import com.tessaro.loterica.event.RecursoCriadoEvent;
 
@@ -26,26 +28,19 @@ public class UserController {
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
-	@PostMapping(value = "/cadastro")
+	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public void cadastrar (@Valid @RequestBody UserDTO user, HttpServletResponse response) {
 		UserDTO usuario = service.salvar(user);
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, usuario.getId())); 
 	}
 	
-//	@PostMapping
-//	@ResponseStatus(HttpStatus.ACCEPTED)
-//	public void acessar (@Valid @RequestBody UserDTO user, HttpServletResponse response) {
-//		UserDTO usuario = service.salvar(user);
-//		publisher.publishEvent(new RecursoCriadoEvent(this, response, usuario.getId())); 
-//	}
-	
-//	@PostMapping
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public void adcPerfil (@Valid @RequestBody UserDTO user, HttpServletResponse response) {
-//		User usuario = service.salvar(user);
-//		publisher.publishEvent(new RecursoCriadoEvent(this, response, usuario.getId())); 
-//		service.salvar(user);
-//	}
-	
+	@PreAuthorize("hasRole('ADMIN')")
+	@PostMapping("/{perfil}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void cadastrarPerfil (@RequestBody ObjectNode objectNode , HttpServletResponse response) {
+		String email = objectNode.get("email").asText();
+		Integer perfil = objectNode.get("perfil").asInt();
+		service.cadastrarPerfil(email, perfil);
+	}
 }

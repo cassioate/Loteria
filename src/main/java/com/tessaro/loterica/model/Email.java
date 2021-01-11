@@ -33,9 +33,10 @@ public class Email {
 	private String email;
 	
 	@JsonIgnore
-	@OneToOne(mappedBy = "email_proprietario")
+	@OneToOne(mappedBy = "email")
 	private Pessoa proprietario;
 	
+	@JsonIgnore
 	@OrderBy(value = "id")
 	@ManyToMany
 	@JoinTable(name = "EMAIL_NUMERO", 

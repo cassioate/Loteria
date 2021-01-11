@@ -1,5 +1,7 @@
 package com.tessaro.loterica.model.dto;
 
+import javax.validation.constraints.Email;
+
 import com.sun.istack.NotNull;
 import com.tessaro.loterica.service.annotations.EmailValido;
 
@@ -20,6 +22,7 @@ public class PessoaDTO {
 	private String nome;
 	
 	@NotNull
-	private EmailDTO email_proprietario;
+	@Email
+	private String email;
 	
 }

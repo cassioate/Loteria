@@ -6,7 +6,6 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tessaro.loterica.model.Email;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +22,7 @@ public class NumeroDaSorteDTO {
 	private Integer numero;
 
 	@NotNull
-	private List<Email> email_associado = new ArrayList<>();
+	@JsonIgnore
+	private List<EmailDTO> email_associado = new ArrayList<>();
 
 }

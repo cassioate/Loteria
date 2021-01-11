@@ -31,4 +31,12 @@ public class EmailDTO {
 		super();
 		this.email = email;
 	}
+
+	public EmailDTO (Long id, String email, List<NumeroDaSorte> numero, Pessoa proprietario) {
+		super();
+		this.email = email;
+		this.id = id;
+		this.numero_associado = numero;
+		this.proprietario = proprietario;
+	}
 }

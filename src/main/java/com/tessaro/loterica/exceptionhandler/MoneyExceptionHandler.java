@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -20,8 +21,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-
 
 @ControllerAdvice
 public class MoneyExceptionHandler extends ResponseEntityExceptionHandler {
@@ -46,10 +45,50 @@ public class MoneyExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
 	
+	@ExceptionHandler({IllegalArgumentException.class })
+	public ResponseEntity<Object> handleConstraintViolationException(IllegalArgumentException ex, WebRequest request) {
+		String mensagemDev = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
+		String mensagemUsuario = messageSource.getMessage("falta.campo", null, LocaleContextHolder.getLocale());
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDev));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
+	
+	@ExceptionHandler({ConstraintViolationException.class })
+	public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
+		String mensagemDev = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
+		String mensagemUsuario = messageSource.getMessage("falta.campo", null, LocaleContextHolder.getLocale());
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDev));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+	}
+	
 	@ExceptionHandler({ NoSuchElementException.class })
 	public ResponseEntity<Object> handleNoSuchElementException(NoSuchElementException ex, WebRequest request) {
 		String mensagemDev = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
 		String mensagemUsuario = messageSource.getMessage("nao.existe.na.base", null, LocaleContextHolder.getLocale());
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDev));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+	}
+	
+	@ExceptionHandler({ NegocioException.class })
+	public ResponseEntity<Object> handleNoSuchElementException(NegocioException ex, WebRequest request) {
+		String mensagemDev = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
+		String mensagemUsuario = messageSource.getMessage("limite.atingido", null, LocaleContextHolder.getLocale());
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDev));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.CONFLICT, request);
+	}
+	
+	@ExceptionHandler({ IndexOutOfBoundsException.class })
+	public ResponseEntity<Object> handleNoSuchElementException(IndexOutOfBoundsException ex, WebRequest request) {
+		String mensagemDev = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
+		String mensagemUsuario = messageSource.getMessage("solicitado.nao.existe", null, LocaleContextHolder.getLocale());
+		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDev));
+		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+	}
+	
+	@ExceptionHandler({ RepetidoExcepetion.class })
+	public ResponseEntity<Object> handleNoSuchElementException(RepetidoExcepetion ex, WebRequest request) {
+		String mensagemDev = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
+		String mensagemUsuario = messageSource.getMessage("possui.perfil", null, LocaleContextHolder.getLocale());
 		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDev));
 		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}

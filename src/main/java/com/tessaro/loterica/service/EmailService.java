@@ -5,6 +5,9 @@ import java.util.NoSuchElementException;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.tessaro.loterica.model.Email;
@@ -34,5 +37,10 @@ public class EmailService {
 		EmailDTO emailDTO = new EmailDTO();
 		BeanUtils.copyProperties(emailUnico, emailDTO);
 		return emailDTO;
+	}
+	
+	public Page<Email> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return repository.findAll(pageRequest);
 	}
 }

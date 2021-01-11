@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,9 +28,9 @@ public class NumeroDaSorteController {
 	@Autowired
 	private ApplicationEventPublisher publisher;
 
-//	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
-	public ResponseEntity<NumeroDaSorteDTO> sortearNumero (@Valid @RequestBody Email email, HttpServletResponse response) {
+	public ResponseEntity<NumeroDaSorteDTO> sortearNumero (@Valid @RequestBody Email email, HttpServletResponse response) throws Exception {
 		NumeroDaSorteDTO numeroSalvo = service.sortear(email.getEmail());
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, numeroSalvo.getId()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(numeroSalvo);

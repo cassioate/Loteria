@@ -2,7 +2,6 @@ package com.tessaro.loterica.config.usuario;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.persistence.CollectionTable;
@@ -17,11 +16,9 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "Users")
 public class User {
@@ -39,10 +36,15 @@ public class User {
 	@CollectionTable(name = "PERFIS")
 	private Set<Integer> perfis = new HashSet<Integer>();
 	
+	public User() {
+		perfis.add(3);
+	};
+	
 	public User(String email, String password) {
 		super();
 		this.email = email;
 		this.password = password;
+		perfis.add(3);
 	}
 	
 	public Set<Perfil> getPerfis() {		

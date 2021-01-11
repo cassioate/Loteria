@@ -25,10 +25,10 @@ public class EmailValidator implements ConstraintValidator<EmailValido, PessoaDT
 	public boolean isValid(PessoaDTO pessoa, ConstraintValidatorContext cvc) {
 		boolean isValid = Boolean.FALSE;
 		List<Email> exist = null;
-		exist = repository.findByEmail(pessoa.getEmail_proprietario().getEmail());
+		exist = repository.findByEmail(pessoa.getEmail());
 		
 				try {
-					if(pessoa.getEmail_proprietario().getEmail() == null ) {
+					if(pessoa.getEmail() == null ) {
 						isValid = Boolean.TRUE; 
 					}
 					
@@ -36,7 +36,7 @@ public class EmailValidator implements ConstraintValidator<EmailValido, PessoaDT
 						isValid = Boolean.TRUE; 
 					} 
 					
-					if (pessoa.getEmail_proprietario().getEmail().isBlank()) {
+					if (pessoa.getEmail().isBlank()) {
 						isValid = Boolean.TRUE; 
 						}
 					

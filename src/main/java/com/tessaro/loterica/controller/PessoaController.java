@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ public class PessoaController {
 	@Autowired
 	private ApplicationEventPublisher publisher;
 	
-//	@Secured("ROLE_ADMIN")
+	@PreAuthorize("hasRole('USER') OR hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<PessoaDTO> salvar (@Valid @RequestBody PessoaDTO pessoa, HttpServletResponse response) {
 		PessoaDTO pessoaSalva = service.salvar(pessoa);

@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,14 +26,15 @@ public class Pessoa {
 	
 	private String nome;
 	
+	@JsonIgnore
 	@OneToOne
-	@JoinColumn(name = "email_proprietario_id")
-	private Email email_proprietario;
+	@JoinColumn(name = "email_id")
+	private Email email;
 
 	public Pessoa(String nome, String email) {
 		super();
 		this.nome = nome;
-		this.email_proprietario = new Email(email);
+		this.email = new Email(email);
 	}
 
 }

@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.tessaro.loterica.config.usuario.DTO.UserDTO;
+import com.tessaro.loterica.exceptionhandler.RepetidoExcepetion;
 
 @Service
 public class UserService {
@@ -18,23 +19,23 @@ public class UserService {
 	
 	public UserDTO salvar (UserDTO user){
 		User usuario= new User();
-		BeanUtils.copyProperties(user, usuario, "id");
+		
+		BeanUtils.copyProperties(user, usuario, "id", "perfis");
 		usuario.setPassword(pe.encode(usuario.getPassword()));
 		User usuarioSalvo = repository.save(usuario);
 		BeanUtils.copyProperties(usuarioSalvo, user, "password");
 		return user;
 	}
-	
-	public void acessar (UserDTO user) {
-		User usuario= new User();
-		BeanUtils.copyProperties(user, usuario, "id");
-		
-		User usuarioLogado = repository.findById(user.getId()).get();
-		
-		if (usuarioLogado != null) {
-			pe.matches(user.getPassword(), usuarioLogado.getPassword());
-		}
-		
+
+	public void cadastrarPerfil(String email, Integer perfil) {
+
+			User user = repository.findByEmail(email).get(0);
+			if(user.getPerfis().contains(Perfil.toEnum(perfil))) {
+				throw new RepetidoExcepetion();
+			}
+			if (user != null) {
+			user.addPerfil(Perfil.toEnum(perfil));
+			repository.save(user);
+			}
 	}
-	
 }

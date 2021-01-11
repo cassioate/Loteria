@@ -20,6 +20,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.tessaro.loterica.config.security.JWTAuthenticationFilter;
+import com.tessaro.loterica.config.security.JWTAuthorizationFilter;
 import com.tessaro.loterica.config.security.JWTUtil;
 
 
@@ -39,12 +40,8 @@ public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter{
 	private static final String [] PUBLIC_MATCHERS = {
 			"/login/**",
 			"/h2-console/**",
-			"/users/cadastro",
-			"/users",
-			"/numeros/",
-			"/numeros",
-			"/pessoas/**",
-			"/emails/**"
+			"/users/",
+			"/users"
 	};
 	
 	private static final String [] PUBLIC_MATCHERS_GET = {
@@ -63,6 +60,7 @@ public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter{
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.anyRequest().authenticated();
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 	}

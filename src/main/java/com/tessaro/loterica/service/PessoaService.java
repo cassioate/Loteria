@@ -21,18 +21,17 @@ public class PessoaService {
 
 	public PessoaDTO salvar (PessoaDTO pessoa) {
 		Pessoa pessoaASalvar = new Pessoa();
-		Email emailConverter = new Email();
-		BeanUtils.copyProperties(pessoa.getEmail_proprietario(), emailConverter);
-		BeanUtils.copyProperties(pessoa, pessoaASalvar, "email_proprietario");
-		Email emailSalvo = repositoryEmail.save(emailConverter);
-		Pessoa pessoaSalva = repository.save(pessoaASalvar);
-		pessoaSalva.setEmail_proprietario(emailConverter);
-		emailSalvo.setProprietario(pessoaSalva);
-
-		BeanUtils.copyProperties(emailSalvo, pessoa.getEmail_proprietario());
-		BeanUtils.copyProperties(pessoaSalva, pessoa, "email_proprietario");
+		Email email = repositoryEmail.save(new Email(pessoa.getEmail()));
 		
-		BeanUtils.copyProperties(pessoaSalva, pessoa);
+		BeanUtils.copyProperties(pessoa, pessoaASalvar, "email");
+		pessoaASalvar.setEmail(email);
+		
+		Pessoa pessoaSalva = repository.save(pessoaASalvar);
+		email.setProprietario(pessoaASalvar);
+
+		BeanUtils.copyProperties(pessoaSalva, pessoa, "email");
+		pessoa.setEmail(email.getEmail());
+		
 		return pessoa;
 	}
 }
