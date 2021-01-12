@@ -40,7 +40,6 @@ public class NumeroDaSorte {
 		this.numero = numero;
 		this.email_associado = email_associado;
 	}
-
 }
 
 
