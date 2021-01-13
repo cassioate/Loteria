@@ -29,7 +29,8 @@ import com.tessaro.loterica.config.security.JWTUtil;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true) 
 public class AuthorizationServerConfig extends WebSecurityConfigurerAdapter{
 	
-	@Autowired UserDetailsService userDetailsService;
+	@Autowired 
+	private UserDetailsService userDetailsService;
 	
 	@Autowired
 	private Environment env;

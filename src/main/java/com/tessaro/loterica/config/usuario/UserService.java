@@ -2,9 +2,11 @@ package com.tessaro.loterica.config.usuario;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.tessaro.loterica.config.security.UserSS;
 import com.tessaro.loterica.config.usuario.DTO.UserDTO;
 import com.tessaro.loterica.exceptionhandler.RepetidoExcepetion;
 
@@ -37,5 +39,14 @@ public class UserService {
 			user.addPerfil(Perfil.toEnum(perfil));
 			repository.save(user);
 			}
+	}
+	
+	public static UserSS authenticated() {
+		try {
+			return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		} catch (Exception e) {
+			return null;
+		}
+		
 	}
 }

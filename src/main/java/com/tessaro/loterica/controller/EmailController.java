@@ -43,7 +43,7 @@ public class EmailController {
 	@RequestMapping(value="/page", method=RequestMethod.GET)
 	public ResponseEntity<Page<EmailDTO>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page, 
-			@RequestParam(value="linesPerPage", defaultValue="2") Integer linesPerPage, 
+			@RequestParam(value="linesPerPage", defaultValue="3") Integer linesPerPage, 
 			@RequestParam(value="orderBy", defaultValue="email") String orderBy, 
 			@RequestParam(value="direction", defaultValue="ASC") String direction) {
 		Page<Email> list = service.findPage(page, linesPerPage, orderBy, direction);
